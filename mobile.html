@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07182D">
+<title>DAT Tech Summit · Kraków · Companion</title>
+<style>
+:root{--bg:#07182D;--panel:#0d2440;--ink:#fff;--body:#B4B9C0;--sub:#6f7c8c;--cyan:#02C8FF;--blue:#0A60FF;--mag:#FF007F;--orange:#FF9000;--amber:#ffd36b;--green:#00D26A;--r:18px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--ink);font-family:"CiscoSansTT","Helvetica Neue",Helvetica,Arial,sans-serif}
+body{overflow-x:hidden;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+canvas#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:14px 14px 0}
+a{color:var(--cyan)}
+.tbc{color:var(--orange)}
+.mono{font-family:"SF Mono",Menlo,Consolas,monospace}
+/* hero with skyline */
+.hero{position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(170deg,#123a6b 0%,#0a2348 55%,#081a35 100%);border:1px solid #02C8FF33;box-shadow:0 20px 60px #0008;transform-style:preserve-3d;transition:transform .15s}
+.hero.night{background:linear-gradient(170deg,#061430 0%,#081a35 60%,#050f22 100%)}
+.holo{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.45;background:linear-gradient(115deg,transparent 20%,#02C8FF2e 35%,#FF007F22 45%,#ffd36b1e 55%,transparent 70%);background-size:250% 250%;background-position:var(--hx,50%) var(--hy,50%)}
+.htop{padding:18px 112px 0 18px}
+#globe{position:absolute;right:8px;top:8px;width:104px;height:104px;pointer-events:none}
+.calm #globe{opacity:.8}
+.calmrow{margin-top:8px}.calmrow label{cursor:pointer;text-decoration:underline dotted}
+.kick{font-size:10px;letter-spacing:.3em;color:var(--cyan);text-transform:uppercase}
+.htop h1{font-size:28px;margin-top:6px}
+.htop .plain{color:var(--body);font-size:13px;margin-top:4px}
+.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 18px 6px}
+.f small{display:block;font-size:9px;letter-spacing:.2em;color:var(--body);text-transform:uppercase}
+.f b{font:700 15px/1.3 "SF Mono",Menlo,monospace}
+.namef{padding:6px 18px 0}
+.namef small{font-size:9px;letter-spacing:.2em;color:var(--body)}
+.namef input{display:block;width:100%;background:transparent;border:0;border-bottom:1px dashed #ffffff40;color:#fff;font:700 18px "SF Mono",Menlo,monospace;letter-spacing:.06em;padding:4px 0 6px;outline:none}
+#hello{font-size:13px;color:var(--amber);min-height:18px;margin-top:6px}
+.skywrap{position:relative;margin-top:8px;height:92px}
+.skywrap svg.sky{position:absolute;left:0;right:0;bottom:0;width:100%;height:92px}
+.skywrap canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.sky g[fill="#ffd36b"] rect{animation:tw 3.5s ease-in-out infinite}
+.sky g[fill="#ffd36b"] rect:nth-child(2n){animation-delay:1.2s}.sky g[fill="#ffd36b"] rect:nth-child(3n){animation-delay:2.1s}
+.hero.night .sky g[fill="#ffd36b"]{opacity:1!important;filter:drop-shadow(0 0 3px #ffd36b)}
+@keyframes tw{50%{opacity:.35}}
+.hit{fill:transparent;cursor:pointer}
+.ring{position:absolute;pointer-events:none;border:2px solid var(--amber);border-radius:50%;animation:ping .9s ease-out forwards}
+@keyframes ping{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(2.4)}}
+/* countdown */
+.cd{margin:16px 0 4px;display:flex;justify-content:center;gap:10px}
+.unit{text-align:center}
+.digits{display:flex;gap:3px}
+.flap{position:relative;width:34px;height:48px;border-radius:7px;background:#03101f;box-shadow:inset 0 0 0 1px #ffffff14;font:800 32px/48px "SF Mono",Menlo,monospace;color:#fff;text-align:center}
+.flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#000a}
+.flap.go{animation:flip .45s}
+@keyframes flip{50%{transform:rotateX(90deg);filter:brightness(.5)}}
+.unit span{display:block;font-size:10px;letter-spacing:.25em;color:var(--body);margin-top:6px}
+.cdsub{text-align:center;font-size:12px;color:var(--body)}
+.nn{display:grid;gap:10px;margin-top:14px}
+.nnc{border-radius:var(--r);padding:14px 16px;background:linear-gradient(120deg,#02C8FF22,#0A60FF11);border:1px solid #02C8FF55}
+.nnc small{font-size:10px;letter-spacing:.25em;color:var(--cyan)}
+.nnc b{display:block;font-size:18px;margin-top:4px}
+.bar{height:5px;border-radius:5px;background:#ffffff14;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue))}
+/* sections */
+.sec{display:none;animation:fadeup .45s both}.sec.on{display:block}
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}}
+.tiny{font-size:10px;letter-spacing:.3em;color:var(--sub);text-transform:uppercase;margin-top:24px}
+h2{font-size:26px;margin:4px 0 6px}
+.lead{color:var(--body);font-size:14px;line-height:1.5;margin-bottom:12px}
+.card{background:#0d2440cc;border:1px solid #ffffff14;border-radius:var(--r);padding:16px;margin:10px 0;line-height:1.5;font-size:14px;color:#dfe6ee}
+.card b{color:#fff}
+.btn{display:inline-block;margin-top:10px;background:transparent;border:1px solid var(--cyan);color:var(--cyan);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;text-decoration:none;cursor:pointer}
+.tag{display:inline-block;font-size:10px;letter-spacing:.2em;color:var(--amber);border:1px solid #ffd36b66;border-radius:6px;padding:2px 8px}
+/* departures board */
+.dayb{display:flex;gap:8px;margin:10px 0}
+.dayb button{flex:1;background:#03101f;border:1px solid #ffffff1f;color:var(--body);border-radius:12px;padding:10px;font-weight:700;letter-spacing:.1em}
+.dayb button.on{border-color:var(--amber);color:var(--amber);box-shadow:0 0 20px #FFC83D22}
+.board{background:#020a14;border-radius:14px;padding:6px;border:1px solid #ffffff12;box-shadow:inset 0 0 40px #000}
+.bh,.row{display:grid;grid-template-columns:54px 1fr 76px;gap:8px;align-items:center}
+.bh{font-size:9px;letter-spacing:.25em;color:var(--sub);padding:6px 8px}
+.row{padding:9px 8px;border-top:1px solid #ffffff0a;font:600 12.5px/1.3 "SF Mono",Menlo,monospace;color:var(--amber);text-transform:uppercase}
+.row .n{color:#ffe7a8}
+.st{font-size:9.5px;letter-spacing:.12em;text-align:right}
+.st.board-now{color:var(--green);animation:blink 1s steps(2) infinite}
+.st.inflight{color:var(--cyan)}
+.st.landed{color:var(--sub)}
+.row.now{background:linear-gradient(90deg,#02C8FF22,transparent);border-left:3px solid var(--cyan)}
+.row.past{opacity:.45}
+@keyframes blink{50%{opacity:.25}}
+/* route map */
+.routebox{background:#03101fcc;border:1px solid #ffffff12;border-radius:var(--r);padding:10px;position:relative}
+.routebox svg{width:100%;height:auto;display:block}
+.wp{cursor:pointer}
+.tip{position:absolute;pointer-events:none;background:#0d2440;border:1px solid var(--cyan);border-radius:10px;padding:8px 10px;font-size:12px;max-width:200px;opacity:0;transition:opacity .2s;box-shadow:0 8px 30px #000a}
+.tip.on{opacity:1}
+/* checklist */
+.gauge{display:flex;align-items:center;gap:16px;margin:8px 0 6px}
+.gauge svg{width:110px;height:110px}
+.gauge .gtxt2 b{font-size:22px}
+.sw{display:flex;align-items:center;gap:14px;background:#0d2440cc;border:1px solid #ffffff14;border-radius:var(--r);padding:14px;margin:10px 0;cursor:pointer;user-select:none}
+.tog{flex:none;width:30px;height:52px;border-radius:8px;background:#020a14;border:1px solid #ffffff22;position:relative}
+.tog i{position:absolute;left:4px;right:4px;height:22px;border-radius:5px;background:linear-gradient(#cfd6de,#7d8894);top:26px;transition:top .25s cubic-bezier(.3,1.6,.4,1)}
+.led{flex:none;width:10px;height:10px;border-radius:50%;background:#3a1010;box-shadow:inset 0 0 2px #000}
+.sw.done .tog i{top:4px}
+.sw.done .led{background:var(--green);box-shadow:0 0 10px var(--green)}
+.sw .t{font-size:14px;line-height:1.4}
+.sw .t small{display:block;color:var(--body);font-size:11.5px;margin-top:3px}
+.stamp{display:none;margin:14px auto 0;width:max-content;padding:10px 18px;border:3px solid var(--green);color:var(--green);font:800 16px "SF Mono",Menlo,monospace;letter-spacing:.2em;border-radius:10px;transform:rotate(-6deg);box-shadow:0 0 30px #00D26A44}
+.stamp.on{display:block;animation:stampin .5s cubic-bezier(.2,1.8,.3,1)}
+@keyframes stampin{from{transform:rotate(-6deg) scale(3);opacity:0}}
+/* weather radar */
+.wx{display:flex;gap:14px;align-items:center}
+.radar{position:relative;flex:none;width:92px;height:92px;border-radius:50%;background:radial-gradient(circle,#02C8FF22 0 1px,transparent 1px 30%,#02C8FF22 30% 31%,transparent 31% 62%,#02C8FF22 62% 63%,transparent 63%);border:1px solid #02C8FF55;overflow:hidden}
+.radar::after{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg,#02C8FF66,transparent 25%);animation:sweep 3s linear infinite;border-radius:50%}
+@keyframes sweep{to{transform:rotate(360deg)}}
+.radar b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:1}
+.wxd{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.wxd div{background:#020a14;border-radius:10px;padding:6px 10px;font-size:12px;color:var(--body)}
+.wxd b{color:#fff}
+.dayb button{letter-spacing:.06em}
+@keyframes gp{50%{filter:drop-shadow(0 0 8px #02C8FF)}}
+.planeg{animation:gp 2.4s ease-in-out infinite}
+.radar{animation:rg 3s ease-in-out infinite}
+@keyframes rg{50%{box-shadow:0 0 22px #02C8FF55}}
+.hints li.lock{color:var(--sub);font-style:italic}
+/* city */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{border-radius:var(--r);padding:14px;text-decoration:none;color:#fff;min-height:146px;display:flex;flex-direction:column;justify-content:space-between}
+.tile b{display:block;font-size:14px;margin-top:8px}.tile span{display:block;font-size:11.5px;color:#dfe6ee;margin-top:4px;line-height:1.4}
+.food{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:6px}
+.food>div{cursor:pointer}.food b{display:block;font-size:13px;margin-top:4px}.food small{color:var(--body);font-size:11px}
+.phr{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:14px}.phr i{color:var(--body);font-style:normal;text-align:right}
+details{margin:10px 0}
+summary{list-style:none;cursor:pointer;background:#0d2440cc;border:1px solid #ffffff14;border-radius:var(--r);padding:14px 16px;font-weight:700;display:flex;justify-content:space-between}
+summary::after{content:"+";color:var(--cyan)}details[open] summary::after{content:"–"}
+/* explorer / quiz */
+.stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}
+.stp{aspect-ratio:1;border-radius:50%;border:2px dashed #ffffff26;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;color:var(--sub);padding:6px;line-height:1.2;position:relative}
+.stp.got{border:2px solid var(--amber);color:var(--amber);background:radial-gradient(circle,#ffd36b22,transparent 70%);transform:rotate(-8deg);font-weight:800;letter-spacing:.05em}
+.stp.got::after{content:"✓";position:absolute;right:-2px;top:-2px;width:18px;height:18px;border-radius:50%;background:var(--green);color:#04121f;font-size:11px;display:flex;align-items:center;justify-content:center}
+.stp.miss{border-color:#FF007F66;color:#FF007F99}
+.hints li{margin:6px 0 6px 18px;color:var(--body);font-size:13.5px;line-height:1.45}
+.hints li.got{color:var(--green);text-decoration:line-through}
+.score{font:800 44px "SF Mono",Menlo,monospace}
+.badge{display:none;margin:14px 0;padding:16px;border-radius:var(--r);text-align:center;background:linear-gradient(135deg,#ffd36b33,#FF007F22);border:1px solid #ffd36b88}
+.badge.on{display:block;animation:fadeup .5s}
+/* quiz modal */
+#qm{position:fixed;inset:0;z-index:70;background:#000a;backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
+#qm.on{display:flex}
+.qbox{width:100%;max-width:560px;background:linear-gradient(170deg,#123a6b,#0a2348);border:1px solid #ffd36b66;border-radius:24px 24px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));animation:up .35s cubic-bezier(.2,.9,.3,1)}
+@keyframes up{from{transform:translateY(100%)}}
+.qbox .found{font-size:11px;letter-spacing:.3em;color:var(--amber)}
+.qbox h3{font-size:20px;margin:8px 0 6px}
+.qbox p{color:var(--body);font-size:14px;line-height:1.5}
+.opts{display:grid;gap:8px;margin-top:14px}
+.opts button{background:#03101f;border:1px solid #ffffff26;color:#fff;border-radius:14px;padding:13px 14px;text-align:left;font-size:15px}
+.opts button.right{border-color:var(--green);background:#00D26A22}
+.opts button.wrong{border-color:var(--mag);background:#FF007F22}
+.qfb{margin-top:12px;font-size:14px;min-height:20px}
+.qclose{margin-top:12px;width:100%;background:var(--cyan);color:#04121f;border:0;border-radius:999px;padding:13px;font-weight:800;display:none}
+/* toast */
+#toast{position:fixed;left:50%;top:16px;transform:translate(-50%,-260%);z-index:80;background:#0d2440;border:1px solid var(--amber);color:#fff;border-radius:999px;padding:10px 18px;font-size:13px;transition:transform .35s;white-space:nowrap}
+#toast.on{transform:translate(-50%,0)}
+/* nav */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#07182Df2 30%);display:flex;justify-content:center}
+.navi{display:flex;gap:2px;background:#0d2440ee;border:1px solid #ffffff18;border-radius:22px;padding:6px;backdrop-filter:blur(12px);max-width:560px;width:100%}
+.navi button{flex:1;background:none;border:0;color:var(--body);font-size:10px;padding:6px 0;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+.navi button svg{width:21px;height:21px}
+.navi button.on{background:#02C8FF1f;color:var(--cyan)}
+.navi .dot{position:absolute;top:3px;right:18%;min-width:15px;height:15px;border-radius:8px;background:var(--amber);color:#04121f;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.foot{margin:30px 0 20px;text-align:center;color:var(--sub);font-size:11px;line-height:1.7}
+.tm{display:none;margin-top:8px}.tm.on{display:block}.tm input{width:100%}
+#confetti{position:fixed;inset:0;z-index:90;pointer-events:none}
+@media (min-width:900px){.wrap{max-width:560px}}
+
+/* ── desktop / laptop layout (same file) ── */
+@media (min-width:900px){
+ body{padding-bottom:110px}
+ .wrap{max-width:1180px;display:grid;grid-template-columns:430px 1fr;column-gap:32px;align-items:start;padding-top:28px}
+ .wrap>.hero{grid-column:1;grid-row:1}
+ #cdwrap{grid-column:1;grid-row:2}
+ .sec{grid-column:2;grid-row:1 / span 3}
+ .sec .tiny:first-child{margin-top:0}
+ .foot{grid-column:1 / -1}
+ .tiles{grid-template-columns:repeat(3,1fr)}
+ .navi{max-width:720px}
+ .navi button{flex-direction:row;justify-content:center;gap:8px;font-size:13px;padding:10px 4px}
+}
+/* ── print / PDF guide (?print=1) ── */
+.pdfonly{display:none}
+.print .pdfonly{display:block}
+.print nav,.print #calm,.print #tmlink,.print .namef,.print .wx,.print #wxdays,.print canvas#sky,.print canvas#confetti,.print .noprint,.print #toast,.print #qm{display:none!important}
+.print .wrap{max-width:none;padding:0}
+.print .sec{display:block!important;animation:none}
+.print .sec[data-s="quiz"],.print .sec[data-s="timeline"]{display:none!important}
+.print .hero{transform:none!important}
+.print .card,.print .sw,.print .board,.print .tile,.print summary{break-inside:avoid}
+.print .sec{break-before:auto}
+.print .dayh2{font-size:12px;letter-spacing:.25em;color:var(--cyan);margin:14px 0 6px}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:A4;margin:10mm}html,body{background:#07182D}body{padding-bottom:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas><canvas id="confetti"></canvas><div id="toast"></div>
+
+<div class="wrap">
+  <div class="hero" id="hero">
+    <div class="holo"></div>
+    <canvas id="globe" width="208" height="208"></canvas>
+    <div class="htop">
+      <div class="kick">FY27 DAT Tech Summit</div>
+      <h1>Kraków</h1>
+      <div class="plain">16–17 December 2026 · Cisco Kraków office</div>
+    </div>
+    <div class="fields">
+      <div class="f"><small>Dates</small><b>16–17 DEC</b></div>
+      <div class="f"><small>Doors open</small><b>08:00</b></div>
+      <div class="f"><small>Kick-off</small><b>09:00</b></div>
+    </div>
+    <div class="namef"><small>YOUR NAME (stays on your phone)</small><input id="pname" maxlength="22" placeholder="Type your name" autocomplete="off"><div id="hello"></div></div>
+    <div class="skywrap" id="skywrap"><svg class="sky" viewBox="0 0 800 84" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<path d="M0 84V70Q70 58 140 63T270 68Q330 66 400 70T800 68V84z" fill="#173d72"/>
+<g fill="#1f4a86">
+<!-- Wawel castle and cathedral -->
+<rect x="52" y="42" width="120" height="28"/><g><rect x="52" y="38" width="5" height="5"/><rect x="63" y="38" width="5" height="5"/><rect x="74" y="38" width="5" height="5"/><rect x="85" y="38" width="5" height="5"/><rect x="96" y="38" width="5" height="5"/><rect x="107" y="38" width="5" height="5"/><rect x="118" y="38" width="5" height="5"/><rect x="129" y="38" width="5" height="5"/><rect x="140" y="38" width="5" height="5"/><rect x="151" y="38" width="5" height="5"/><rect x="162" y="38" width="5" height="5"/></g>
+<rect x="52" y="26" width="15" height="44"/><polygon points="50,26 59.5,10 69,26"/>
+<rect x="157" y="28" width="15" height="42"/><polygon points="155,28 164.5,12 174,28"/>
+<rect x="92" y="34" width="34" height="36"/><polygon points="92,34 109,22 126,34"/>
+<rect x="104" y="20" width="10" height="16"/><path d="M103 20a6 6 0 0 1 12 0z" fill="#c9a24d"/><rect x="108" y="9" width="2" height="6" fill="#c9a24d"/>
+<!-- Cloth Hall -->
+<rect x="300" y="56" width="150" height="22"/><rect x="300" y="50" width="6" height="7"/><rect x="312" y="50" width="6" height="7"/><rect x="324" y="50" width="6" height="7"/><rect x="336" y="50" width="6" height="7"/><rect x="348" y="50" width="6" height="7"/><rect x="360" y="50" width="6" height="7"/><rect x="372" y="50" width="6" height="7"/><rect x="384" y="50" width="6" height="7"/><rect x="396" y="50" width="6" height="7"/><rect x="408" y="50" width="6" height="7"/><rect x="420" y="50" width="6" height="7"/><rect x="432" y="50" width="6" height="7"/><rect x="444" y="50" width="6" height="7"/>
+<!-- St Mary's Basilica -->
+<rect x="482" y="52" width="72" height="26"/><polygon points="482,52 518,40 554,52"/>
+<rect x="516" y="22" width="16" height="56"/><polygon points="514,22 524,0 534,22"/>
+<rect x="512" y="18" width="3" height="8"/><rect x="533" y="18" width="3" height="8"/>
+<rect x="545" y="34" width="14" height="44"/><path d="M543 34q9-16 18 0z"/><rect x="550" y="14" width="4" height="8"/><path d="M549 14q3-8 6 0z"/>
+<!-- Town Hall tower -->
+<rect x="612" y="30" width="14" height="48"/><polygon points="610,30 619,18 628,30"/><rect x="617" y="10" width="4" height="8"/>
+<!-- Old Town houses -->
+<rect x="640" y="58" width="22" height="20"/><polygon points="640,58 651,48 662,58"/>
+<rect x="664" y="54" width="18" height="24"/><polygon points="664,54 673,44 682,54"/>
+<rect x="684" y="60" width="26" height="18"/><polygon points="684,60 697,50 710,60"/>
+<rect x="716" y="52" width="20" height="26"/><polygon points="716,52 726,42 736,52"/>
+<rect x="740" y="58" width="24" height="20"/><polygon points="740,58 752,48 764,58"/>
+<rect x="768" y="56" width="32" height="22"/>
+<rect x="190" y="60" width="22" height="18"/><polygon points="190,60 201,52 212,60"/>
+<rect x="228" y="64" width="30" height="14"/><rect x="266" y="62" width="22" height="16"/><polygon points="266,62 277,54 288,62"/>
+</g>
+<g fill="#ffd36b" opacity=".75"><rect x="60" y="48" width="3" height="4"/><rect x="164" y="50" width="3" height="4"/><rect x="104" y="44" width="3" height="5"/><rect x="518" y="40" width="3" height="5"/><rect x="520" y="56" width="3" height="4"/><rect x="615" y="42" width="3" height="4"/><rect x="654" y="64" width="3" height="4"/><rect x="722" y="60" width="3" height="4"/><rect x="316" y="64" width="3" height="4"/><rect x="380" y="64" width="3" height="4"/></g>
+</svg><canvas id="snow"></canvas></div>
+  </div>
+
+  <div id="cdwrap"></div>
+  <div class="card pdfonly">This is the printable guide. The live version (countdown, live agenda, weather and a small quiz) is on your phone via the QR code.</div>
+
+  <section class="sec" data-s="pre">
+    <div class="tiny">pre-flight</div><h2>Pre work</h2>
+    <p class="lead">Flip each switch when done. Ticks stay on your phone only.</p>
+    <div class="gauge"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="none" stroke="#ffffff14" stroke-width="10"/><circle id="garc" cx="60" cy="60" r="48" fill="none" stroke="url(#gg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="301.6" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset .8s"/><defs><linearGradient id="gg"><stop offset="0" stop-color="#02C8FF"/><stop offset="1" stop-color="#00D26A"/></linearGradient></defs><text id="gpct" x="60" y="67" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">0%</text></svg>
+      <div><b id="gcount" style="font-size:20px">0 / 6</b><div class="lead" style="margin:2px 0 0">done</div></div></div>
+    <div id="checks"></div>
+    <div class="stamp" id="stamp">ALL SET · SEE YOU IN KRAKÓW</div>
+    <p class="lead" style="margin-top:10px">Dates and links are to be confirmed by the session owners.</p>
+  </section>
+
+  <section class="sec" data-s="agenda">
+    <div class="tiny">departures</div><h2>Agenda</h2>
+        <div class="dayb"><button data-d="1">Wed 16 Dec</button><button data-d="2">Thu 17 Dec</button></div>
+    <div class="board"><div class="bh"><span>TIME</span><span>SESSION</span><span style="text-align:right">STATUS</span></div><div id="rows"></div></div>
+    <p class="lead" style="margin-top:10px">All times are Kraków time (CET). Timings are still subject to review with each topic owner.</p>
+    <button class="btn" onclick="ics()">Add the summit to my calendar</button>
+  </section>
+
+  <section class="sec" data-s="timeline">
+    <div class="tiny">flight path</div><h2>Timeline</h2>
+    <p class="lead">Both days as one route. Every session is a waypoint, and during the summit the plane shows where we are. Tap a waypoint.</p>
+    <div class="routebox"><svg id="rmap" viewBox="0 0 360 520"></svg><div class="tip" id="tip"></div></div>
+  </section>
+
+  <section class="sec" data-s="log">
+    <div class="tiny">ground crew</div><h2>Logistics</h2>
+    <div class="card noprint"><b>Offline copy</b><br>Everything on this page as a PDF, for when you have no signal.<br><a class="btn" href="DAT_Tech_Summit_Guide.pdf" target="_blank" rel="noopener">PDF guide (works offline)</a></div>
+    <div class="card"><b>Cisco Kraków office</b><br>Aleja Powstańców Wielkopolskich 13C, Enterprise Park, Building C, 30-707 Kraków<br><a class="btn" target="_blank" rel="noopener" id="m1">Open in Maps</a></div>
+    <div class="card"><b>Lunch</b> is catered at the office on both days. <b>Laptops:</b> where to leave them is <span class="tbc">TBC</span>.</div>
+    <div class="card"><span class="tag">WED 16 DEC</span><br>Team event straight after the day. Transport details <span class="tbc">TBC</span>.</div>
+    <div class="card"><span class="tag">THU 17 DEC</span><br>Dinner at a rooftop restaurant, about a 15-minute walk from the hotel. Bring a warm coat. If you prefer not to walk, take an Uber from the hotel <span class="tbc">(TBC)</span>.</div>
+    <div class="card" id="wxcard"><div class="wx"><div class="radar"><b id="wxnow">--°</b></div><div><b>Kraków weather</b><div class="lead" style="margin:4px 0 0;font-size:13px" id="wxtxt">Loading live radar…</div></div></div><div class="wxd" id="wxdays"></div>
+      <div class="lead" style="margin:10px 0 0;font-size:13px">December in Kraków is usually cold. Pack a warm coat, hat and gloves, and shoes for wet or icy streets.</div>
+      <a class="btn" target="_blank" rel="noopener" href="https://www.timeanddate.com/weather/poland/krakow/ext">Check the forecast</a></div>
+    <details><summary>Travelling to Kraków?</summary>
+      <div class="card"><b>Hotel: Sheraton Grand Kraków</b><br>ul. Powiśle 7, 31-101 Kraków. Breakfast is included.<br><a class="btn" target="_blank" rel="noopener" id="m2">Open in Maps</a></div>
+      <div class="card"><b>From the airport to the hotel</b><br>Uber and Bolt both work. Taxis outside arrivals are usually more expensive. <span class="tbc">(Tips to be confirmed.)</span></div>
+      <div class="card"><b>Hotel to the office</b><br>A bus runs from the hotel in the morning, about 08:00 <span class="tbc">(time TBC)</span>, and back after the day.</div>
+    </details>
+    <div id="fb"></div>
+    <div class="card" id="help"><b>Help</b><br>Logistics team: on site at the office <span class="tbc">(contact TBC)</span><br>Emergency in Poland: <b id="egg112">112</b></div>
+  </section>
+
+  <section class="sec" data-s="city">
+    <div class="tiny">layover</div><h2>Discover Kraków</h2>
+    <div class="card" id="hist">Kraków was the capital of Poland until the late 16th century, and its historic centre is a UNESCO World Heritage site. Wawel Castle is right by the hotel, and the Old Town is within walking distance.</div>
+    <div class="tiles" id="tiles"></div>
+    <div class="card food" id="food"></div>
+    <div class="card"><b>Three words to try</b><div class="phr" style="margin-top:8px"><span>Dzień dobry</span><i>Good day</i><span>Dziękuję</span><i>Thank you</i><span>Na zdrowie</span><i>Cheers</i></div></div>
+    <div class="card" id="xmas" style="display:flex;gap:12px;align-items:center;cursor:pointer"><span style="font-size:26px">🎄</span><span>The Christmas market on the Main Square runs from 27 November 2026 to 6 January 2027.</span></div>
+    <div class="card"><b>Short on time?</b><br>Free windows are short: Wed 17:00 to 18:00 and Thu 17:30 to 18:10. Wawel and the Old Town fit best. Opening hours and ticket rules change, so check before you go. <a target="_blank" rel="noopener" href="https://www.krakow.travel/en">Visit Kraków</a></div>
+  </section>
+
+  <section class="sec" data-s="quiz">
+    <div class="tiny">easter eggs</div><h2>Kraków quiz</h2>
+    <p class="lead">Five secrets are hidden in this app. Find one, answer its question, collect the stamp. Collect all five and you win. Wrong answer? Find it again and retry. The riddles below point the way.</p>
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="score" id="score">0</span><span class="lead" style="margin:0">/ 5 stamps</span></div>
+    <div class="stamps" id="stamps"></div>
+    <div class="badge" id="badge"><div style="font-size:34px">🏆</div><b style="font-size:22px">You win!</b><div style="font-size:16px;margin-top:6px" id="wname"></div><div class="mono" style="margin-top:8px;font-size:20px;letter-spacing:.2em;color:var(--amber)" id="wcode"></div><div class="lead" style="margin:6px 0 0;font-size:12.5px" id="wtime"></div><div class="lead" style="margin:8px 0 0">The first five people to submit win. Prize: <span class="tbc">TBC</span>.</div><a class="btn" id="wsub" target="_blank" rel="noopener" style="background:var(--cyan);color:#04121f">Submit my win</a><div class="lead" style="margin:8px 0 0;font-size:12px">Opens a short form with your name and code. Keep this screen to show the organisers.</div></div>
+    <div class="card"><b>Riddles</b><ol class="hints" id="hints"></ol></div>
+    <button class="btn" id="qreset" style="border-color:#ffffff40;color:var(--body)">Start again</button>
+  </section>
+
+  <div class="foot">FY27 DAT Tech Summit · Kraków · 16–17 December 2026<br>
+    <span id="calm" class="calmrow" style="cursor:pointer;text-decoration:underline dotted">Calm mode: off</span><span id="tmlink" style="cursor:pointer;text-decoration:underline dotted;display:none"> · Time machine (demo)</span>
+    <div class="tm" id="tm"><input type="range" id="tmr" min="0" max="100" value="0"><div id="tml" class="mono"></div></div>
+  </div>
+</div>
+
+<div id="qm"><div class="qbox"><div class="found" id="qfound">EASTER EGG FOUND</div><h3 id="qt"></h3><p id="qs"></p><div class="opts" id="qo"></div><div class="qfb" id="qfb"></div><button class="qclose" id="qc">Collect and continue</button></div></div>
+<nav><div class="navi" id="navi"></div></nav>
+
+<script>
+/* ── data (same facts as the published guide, mobile.html 18 Nov) ── */
+const AG={
+1:[["08:00","Arrival and breakfast (bus from the Sheraton)"],["09:00","Tech Summit Executive Kick Off"],["10:00","Agentic Workforce: Intro"],["10:30","Break"],["11:00","Agentic Workforce: Demo"],["11:30","Agentic Workforce: Hands On"],["12:30","Lunch (catering)"],["13:30","New SOW Tool Demo"],["14:30","Session 2: My Agent"],["15:30","Technical Activation & Graduation"],["16:30","Closing Day 1"],["17:00","Commute / free time"],["18:00","Team Event"]],
+2:[["08:00","Arrival and breakfast (bus from the Sheraton)"],["09:00","MAGIC"],["10:00","Break"],["10:30","Proactive Renewals"],["11:30","People, Purpose, Growth: DAT Scorecard"],["12:30","Lunch (catering)"],["13:15","Special Guest: Adele (SVP, CX)"],["13:45","Cisco IQ and RIS"],["14:45","Break"],["15:15","Uplevel DAT Scoping / AI Scalable Large Deals"],["16:15","Portfolio or Tooling (to be decided)"],["17:00","Closing Day 2 + pledge round"],["17:30","Commute / free time"],["18:10","Team Event"]]};
+const D={1:"2026-12-16",2:"2026-12-17"};
+const WIN_FORM=""; /* paste the Microsoft Forms link here; empty = button shows "link TBC" */
+const CHECKS=[["Add your name to your ticket (top of this page)","name"],["Add the summit to your calendar","cal"],["Write your Wins wall sentence","Slido link TBC"],["Watch Adele's MAGIC video (about 5 min)","link TBC"],["Watch the MCP and DDM Copilot videos (3 min in total)","links TBC"],["My Agent: enable the Outlook, Webex and SharePoint connectors, and watch the 2-minute skill video","links TBC"]];
+const TILES=[["castle","Wawel Castle and Cathedral","Royal residence and coronation cathedral. Look for the Wawel Dragon.","#02C8FF","Wawel Castle Kraków"],["tower","Main Market Square","Basilica, Cloth Hall and an hourly trumpet call.","#ffd36b","Main Market Square Kraków"],["cup","Kazimierz","Cafés, small restaurants and zapiekanka at Plac Nowy.","#FF9000","Plac Nowy Kazimierz Kraków"],["museum","Schindler's Factory","Kraków in the Second World War. Book ahead.","#9fc3e8","Oskar Schindler's Enamel Factory Kraków"],["river","Vistula and the Planty","An easy walk by the river and around the Old Town.","#00D26A","Planty Park Kraków"],["mine","Wieliczka Salt Mine","Half a day outside the city. Book ahead.","#c9a6ff","Wieliczka Salt Mine"]];
+/* Easter eggs: where hidden, hint, question. Answers use only facts already in the guide, plus two well-known ones (St Mary's trumpet call, Wawel Dragon legend). */
+const EGGS_ALL=[
+ {id:"tower",stamp:"Trumpet",hint:"Every hour, someone high above the square plays a song that never ends.",q:"From which church tower is Kraków's hourly trumpet call played?",o:["St Mary's Basilica","Wawel Cathedral","The Town Hall Tower"],a:0,why:"The trumpet call is played every hour from the tower of St Mary's Basilica on the Main Square."},
+ {id:"wawel",stamp:"Dragon",hint:"The castle on the left of the skyline is guarded. Tap it.",q:"Which legendary creature lives under Wawel Hill?",o:["A griffin","A dragon","A white eagle"],a:1,why:"The Wawel Dragon. There is a dragon statue at the foot of the hill."},
+ {id:"pierogi",stamp:"Pierogi",hint:"Hungry for answers? Look for something filled.",q:"What are pierogi?",o:["A street bread ring","Filled dumplings","A toasted baguette"],a:1,why:"Pierogi are filled dumplings. The bread ring is obwarzanek, the baguette is zapiekanka."},
+ {id:"xmas",stamp:"Market",hint:"Something festive on the city tab is hiding a gift.",q:"Until when does the Main Square Christmas market run?",o:["24 December 2026","31 December 2026","6 January 2027"],a:2,why:"It runs from 27 November 2026 to 6 January 2027."},
+ {id:"112",stamp:"112",hint:"The most important number here is also the most curious.",q:"What is the emergency number in Poland?",o:["999","112","911"],a:1,why:"112, the European emergency number."},
+ {id:"hist",stamp:"Capital",hint:"Read the history card slowly. Then tap it three times.",q:"Until when was Kraków the capital of Poland?",o:["The late 16th century","The 19th century","1945"],a:0,why:"Until the late 16th century."},
+ {id:"name",stamp:"Kraków",hint:"Type the host city as your name.",q:"How many days does the summit run?",o:["One","Two","Three"],a:1,why:"Two days: Wednesday 16 and Thursday 17 December."},
+ {id:"count",stamp:"Clock",hint:"Impatient? Knock on time.",q:"What time does the first morning bus leave the hotel, roughly?",o:["About 07:00","About 08:00","About 09:00"],a:1,why:"About 08:00 (time still to be confirmed)."}];
+const EGGS=["tower","count","112","pierogi","xmas"].map(id=>EGGS_ALL.find(e=>e.id===id));
+const IC={castle:'<path d="M5 26V12h4v3h3v-3h4v3h3v-3h4v14M5 26h22M13 26v-6a3 3 0 0 1 6 0v6"/>',tower:'<path d="M13 27V12l3-8 3 8v15M9 27h14M13 17h6M16 4v-2"/>',cup:'<path d="M7 11h15v8a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6zM22 13h2a3 3 0 0 1 0 6h-2M11 5v3M15 5v3M19 5v3"/>',museum:'<path d="M4 12l12-7 12 7M7 14v10M13 14v10M19 14v10M25 14v10M4 26h24"/>',river:'<path d="M3 20c3-3 5-3 8 0s5 3 8 0 5-3 8 0M3 26c3-3 5-3 8 0s5 3 8 0 5-3 8 0M16 4v8M11 8h10M16 12l-4 4M16 12l4 4"/>',mine:'<path d="M6 26 L16 8l10 18zM10 26l6-10 6 10M9 5l7 3 7-3M16 8v3"/>',pierogi:'<path d="M5 21a11 8 0 0 1 22 0zM5 21h22M7 21l1 2M11 21l1 2M15 21l1 2M19 21l1 2M23 21l1 2"/>',ring:'<circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="4"/>',bread:'<path d="M5 18a4 4 0 0 1 4-4h14a4 4 0 0 1 0 8H9a4 4 0 0 1-4-4zM10 16l2 2M15 16l2 2M20 16l2 2"/>',
+ list:'<path d="M9 8h18M9 16h18M9 24h18M4 8h1M4 16h1M4 24h1"/>',cal:'<rect x="5" y="7" width="22" height="20" rx="2"/><path d="M5 13h22M11 4v6M21 4v6"/>',line:'<path d="M10 4v24"/><circle cx="10" cy="9" r="3"/><circle cx="10" cy="21" r="3"/><path d="M16 9h11M16 21h11"/>',pin:'<path d="M16 28s-9-8-9-15a9 9 0 0 1 18 0c0 7-9 15-9 15z"/><circle cx="16" cy="13" r="3"/>',egg:'<path d="M16 4c-5 0-9 8-9 14a9 9 0 0 0 18 0c0-6-4-14-9-14z"/><path d="M9 18l4-2 3 3 3-3 4 2"/>'};
+const ic=(n,c,s,w)=>`<svg viewBox="0 0 32 32" width="${s||28}" height="${s||28}" fill="none" stroke="${c||'currentColor'}" stroke-width="${w||1.8}" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
+const MAP=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+const $=s=>document.querySelector(s);
+const RM0=matchMedia("(prefers-reduced-motion:reduce)").matches;let CALM=!!JSON.parse(localStorage.getItem("dat-calm")||"false");
+const still=()=>RM0||CALM;
+const RM=RM0; /* RM keeps old meaning for one-off effects; moving background uses still() */
+const LS=(k,v)=>v===undefined?JSON.parse(localStorage.getItem(k)||"null"):localStorage.setItem(k,JSON.stringify(v));
+
+/* ── time ── */
+const qp=new URLSearchParams(location.search);const PRINT=qp.get("print")==="1";let SIM=qp.get("d")?new Date(qp.get("d")):null;
+const now=()=>SIM||new Date(),at=(d,t)=>new Date(D[d]+"T"+t+":00+01:00"),START=at(1,"09:00");
+const summit=()=>{const n=now();return n>=at(1,"00:00")&&n<new Date("2026-12-18T00:00:00+01:00")};
+const autoDay=()=>now()>=at(2,"00:00")?2:1;
+const slot=(d,i)=>[at(d,AG[d][i][0]),AG[d][i+1]?at(d,AG[d][i+1][0]):at(d,"23:59")];
+const krkHour=()=>+now().toLocaleString("en-GB",{timeZone:"Europe/Warsaw",hour:"2-digit",hour12:false});
+
+/* ── toast + confetti ── */
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),2200)}
+const cf=$("#confetti"),cx=cf.getContext("2d");let P=[];
+function boom(n){if(RM)return;cf.width=innerWidth;cf.height=innerHeight;const cols=["#02C8FF","#0A60FF","#FF007F","#FF9000","#fff","#00D26A","#ffd36b"];
+ P=P.concat(Array.from({length:n||160},()=>({x:innerWidth/2,y:innerHeight*.45,vx:(Math.random()-.5)*16,vy:-Math.random()*16-4,r:Math.random()*6+3,c:cols[Math.random()*7|0],a:Math.random()*6,s:Math.random()*.3-.15})));
+ if(P.length>(n||160))return;(function f(){cx.clearRect(0,0,cf.width,cf.height);P.forEach(p=>{p.vy+=.4;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});P=P.filter(p=>p.y<cf.height+30);if(P.length)requestAnimationFrame(f)})()}
+function ping(el,e){const r=el.getBoundingClientRect(),d=document.createElement("div");d.className="ring";const x=(e&&e.clientX)||r.left+r.width/2,y=(e&&e.clientY)||r.top+r.height/2;
+ Object.assign(d.style,{left:x-20+"px",top:y-20+scrollY+"px",width:"40px",height:"40px",position:"absolute",zIndex:85});document.body.appendChild(d);setTimeout(()=>d.remove(),900)}
+
+/* ── quiz engine ── */
+const got=()=>LS("dat-eggs")||{};
+function found(id,e,el){const g=got();if(el)ping(el,e);navigator.vibrate&&navigator.vibrate([20,40,20]);
+ if(g[id]){toast("Already collected: "+EGGS.find(x=>x.id===id).stamp);return}
+ const q=EGGS.find(x=>x.id===id);$("#qt").textContent=q.q;$("#qs").textContent="Answer to collect the "+q.stamp+" stamp.";$("#qfb").textContent="";$("#qc").style.display="none";
+ $("#qo").innerHTML=q.o.map((o,i)=>`<button data-i="${i}">${o}</button>`).join("");
+ $("#qo").querySelectorAll("button").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,ok=i===q.a;$("#qo").querySelectorAll("button").forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add("right");else if(k===i)x.classList.add("wrong")});
+  const g2=got();if(ok){g2[id]=true;LS("dat-eggs",g2)}$("#qfb").innerHTML=(ok?"<b style='color:#00D26A'>Correct.</b> ":"<b style='color:#FF007F'>Not quite.</b> ")+q.why;$("#qc").style.display="block";$("#qc").textContent=ok?"Collect the stamp":"Try again later";
+  if(ok)boom(90);quiz();badge()});
+ $("#qm").classList.add("on")}
+$("#qc").onclick=()=>$("#qm").classList.remove("on");$("#qm").onclick=e=>{if(e.target.id==="qm")$("#qm").classList.remove("on")};
+function quiz(){const g=got(),score=EGGS.filter(e=>g[e.id]).length;$("#score").textContent=score;
+ $("#stamps").innerHTML=EGGS.map(e=>`<div class="stp ${g[e.id]?"got":""}">${g[e.id]?e.stamp:"?"}</div>`).join("");
+ $("#hints").innerHTML=EGGS.map((e,i)=>i===EGGS.length-1&&!score?`<li class="lock">Locked. Find any egg to reveal this riddle.</li>`:`<li class="${g[e.id]?"got":""}">${e.hint}</li>`).join("");
+ const win=score===EGGS.length;$("#badge").classList.toggle("on",win);
+ if(win){let w=LS("dat-win");if(!w){w={t:new Date().toISOString()};LS("dat-win",w)}const nm=(LS("dat-name")||"").trim();
+  $("#wname").textContent=nm||"Add your name at the top";$("#wcode").textContent="KRK-"+(hash((nm||"guest").toUpperCase()+w.t)%46656).toString(36).toUpperCase().padStart(3,"0")+"-"+(hash(w.t)%1296).toString(36).toUpperCase().padStart(2,"0");
+  const code=$("#wcode").textContent;const sub=$("#wsub");
+  if(!nm){sub.textContent="Add your name first";sub.removeAttribute("href");sub.onclick=()=>{scrollTo({top:0,behavior:"smooth"});$("#pname").focus()}}
+  else if(!WIN_FORM){sub.textContent="Submit my win (link TBC)";sub.removeAttribute("href");sub.onclick=null}
+  else{sub.textContent="Submit my win";sub.href=WIN_FORM;sub.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(nm+" · "+code);toast("Name and code copied. Paste them into the form.")}}
+  $("#wtime").textContent="Completed "+new Date(w.t).toLocaleString("en-GB",{timeZone:"Europe/Warsaw",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})+" Kraków time"}
+ nav(false)}
+function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function badge(){const g=got();if(EGGS.every(e=>g[e.id]))setTimeout(()=>{boom(260);toast("All five found. You win!");tab="quiz";nav(true)},900)}
+$("#qreset").onclick=()=>{if(confirm("Clear your stamps?")){LS("dat-eggs",{});LS("dat-win",null);quiz()}};
+
+/* ── hero: name, tilt, day/night, skyline eggs ── */
+function hello(){const nm=($("#pname").value||"").trim();LS("dat-name",nm);const first=nm.split(" ")[0];
+ checks();$("#hello").textContent=first?`Dzień dobry, ${first}. See you in Kraków.`:""}
+function tilt(){const p=$("#hero");if(RM)return;const set=(rx,ry)=>{p.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;p.style.setProperty("--hx",(50+ry*4)+"%");p.style.setProperty("--hy",(50-rx*4)+"%")};
+ p.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const r=p.getBoundingClientRect();set(-((e.clientY-r.top)/r.height-.5)*8,((e.clientX-r.left)/r.width-.5)*10)});
+ p.addEventListener("pointerleave",()=>set(0,0));addEventListener("deviceorientation",e=>{if(e.beta==null)return;set(Math.max(-6,Math.min(6,(e.beta-45)/5)),Math.max(-8,Math.min(8,e.gamma/4)))})}
+function daynight(){const h=krkHour();$("#hero").classList.toggle("night",h>=16||h<7)}
+function skylineEggs(){const svg=$("#skywrap svg");const NS="http://www.w3.org/2000/svg";
+ const add=(x,y,w,h,id)=>{const r=document.createElementNS(NS,"rect");Object.entries({x,y,width:w,height:h,class:"hit"}).forEach(([k,v])=>r.setAttribute(k,v));r.addEventListener("click",e=>found(id,e,r));svg.appendChild(r)};
+ add(508,0,32,80,"tower")}
+
+/* ── snow on the skyline (live weather, or ?snow=1) ── */
+let SNOW=qp.get("snow")==="1";
+function snow(){const c=$("#snow"),x=c.getContext("2d");let F=[],hp=null,hn=(new URLSearchParams(location.search).get('fx')?300:4000),hl=performance.now();
+ (function loop(){const w=c.width=c.offsetWidth,h=c.height=c.offsetHeight,t_=performance.now(),dt_=Math.min(.05,(t_-hl)/1000);hl=t_;
+  if(!still()){hn-=dt_*1000;if(hn<=0&&!hp){hp={x:-20,y:10+Math.random()*22,v:34+Math.random()*16};hn=11000+Math.random()*9000}
+   if(hp){hp.x+=hp.v*dt_;x.clearRect(0,0,w,h);x.strokeStyle="rgba(210,235,255,.18)";x.lineWidth=1;x.beginPath();x.moveTo(Math.max(0,hp.x-70),hp.y);x.lineTo(hp.x-6,hp.y);x.stroke();drawPlane(x,hp.x,hp.y,1,.45,.8);if(hp.x>w+30)hp=null}}
+  if(SNOW&&!still()){if(F.length<70)F.push({x:Math.random()*w,y:-4,v:.3+Math.random()*.7,r:Math.random()*1.6+.6});
+  x.clearRect(0,0,w,h);x.fillStyle="#fff";F.forEach(f=>{f.y+=f.v;f.x+=Math.sin(f.y/12)*.3;x.globalAlpha=.85;x.beginPath();x.arc(f.x,f.y,f.r,0,7);x.fill()});F=F.filter(f=>f.y<h+3)}requestAnimationFrame(loop)})()}
+
+/* ── countdown / now-next ── */
+let lastD="",cdTaps=0;
+function countdown(){if(PRINT){$("#cdwrap").innerHTML=`<div class="cdsub" style="margin:14px 0 6px">Kick-off: Wed 16 Dec, 09:00 (Kraków time)</div>`;return}const n=now(),ms=START-n,w=$("#cdwrap");
+ if(ms>0){const v=[Math.floor(ms/864e5),Math.floor(ms%864e5/36e5),Math.floor(ms%36e5/6e4)].map(x=>String(x).padStart(2,"0"));const key=v.join("");if(key===lastD)return;const prev=lastD;lastD=key;
+  w.innerHTML=`<div class="cd" id="cdbox">${v.map((x,i)=>`<div class="unit"><div class="digits">${x.split("").map(c=>`<div class="flap">${c}</div>`).join("")}</div><span>${["DAYS","HOURS","MIN"][i]}</span></div>`).join("")}</div><div class="cdsub">Kick-off: Wed 16 Dec, 09:00 (Kraków time)</div>`;
+  if(prev)w.querySelectorAll(".flap").forEach((f,i)=>{if(prev[i]!==key[i])f.classList.add("go")});
+  $("#cdbox").onclick=e=>{if(++cdTaps>=5){cdTaps=0;found("count",e,$("#cdbox"))}};return}
+ lastD="";if(summit()){const d=autoDay(),A=AG[d];let idx=-1;A.forEach((r,i)=>{if(n>=at(d,r[0]))idx=i});const c=idx>=0?A[idx]:null,x=A[idx+1];let pct=0;if(c){const [a,b]=slot(d,idx);pct=Math.min(100,(n-a)/(b-a)*100)}
+  w.innerHTML=`<div class="nn"><div class="nnc"><small>NOW · ${d===1?"WED 16 DEC":"THU 17 DEC"}</small><b>${c?c[1]:"Doors open soon"}</b>${c?`<div class="bar"><i style="width:${pct}%"></i></div>`:""}</div><div class="nnc" style="background:#0d2440cc;border-color:#ffffff1a"><small style="color:var(--amber)">NEXT</small><b>${x?x[0]+" · "+x[1]:"That's a wrap for today"}</b></div></div>`}
+ else w.innerHTML=`<div class="nn"><div class="nnc"><small>THANK YOU</small><b>Thank you for joining us in Kraków.</b></div></div>`}
+
+/* ── agenda board + route (v1 style, plain statuses) ── */
+let day=1;
+function state(d,i){const n=now(),[a,b]=slot(d,i);if(n>=b)return["DONE","landed"];if(n>=a)return["NOW","inflight"];if(a-n<15*6e4)return["STARTING","board-now"];return["SCHEDULED",""]}
+function agenda(){document.querySelectorAll(".dayb button").forEach(b=>b.classList.toggle("on",+b.dataset.d===day));
+ $("#rows").innerHTML=AG[day].map((r,i)=>{const [s,c]=state(day,i);return `<div class="row ${c==="inflight"?"now":""} ${c==="landed"?"past":""}"><span class="t" data-f="${r[0]}">${r[0]}</span><span class="n" data-f="${r[1]}">${r[1]}</span><span class="st ${c}" data-f="${s}">${s}</span></div>`}).join("");
+ if(RM)return;const ch="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:";
+ $("#rows").querySelectorAll("[data-f]").forEach((el,k)=>{const f=el.dataset.f,row=Math.floor(k/3);let i=0;el.textContent=f.replace(/\S/g," ");
+  setTimeout(()=>{const iv=setInterval(()=>{i++;el.textContent=f.split("").map((c,j)=>c===" "||j<i-3?c:ch[Math.random()*ch.length|0]).join("");if(i>f.length+3){el.textContent=f;clearInterval(iv)}},60)},row*110)})}
+document.querySelectorAll(".dayb button").forEach(b=>b.onclick=()=>{day=+b.dataset.d;agenda()});
+function timeline(){const svg=$("#rmap"),W=360,pts=[];
+ let html=`<defs><linearGradient id="rgr" x1="0" x2="1"><stop offset="0" stop-color="#02C8FF"/><stop offset="1" stop-color="#0A60FF"/></linearGradient><filter id="gl"><feGaussianBlur stdDeviation="3"/></filter></defs>`;
+ [[1,40,250],[2,290,500]].forEach(([d,y0,y1])=>{const A=AG[d],n=A.length;html+=`<text x="12" y="${y0-14}" fill="#ffd36b" font-size="11" letter-spacing="3" font-family="Menlo,monospace">DAY ${d} · ${d===1?"WED 16 DEC":"THU 17 DEC"}</text>`;
+  A.forEach((r,i)=>{const t=i/(n-1);pts.push({x:W/2+Math.sin(t*Math.PI*2.2+(d-1))*120,y:y0+t*(y1-y0),d,i,r})})});
+ const path=pts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
+ html+=`<path d="${path}" fill="none" stroke="#02C8FF" stroke-width="6" opacity=".22" filter="url(#gl)"/><path d="${path}" fill="none" stroke="url(#rgr)" stroke-width="2" stroke-dasharray="4 5"/>`;
+ pts.forEach((p,k)=>{const [,c]=state(p.d,p.i);const col=c==="landed"?"#525E6C":c==="inflight"?"#00D26A":/break|lunch|commute/i.test(p.r[1])?"#B4B9C0":"#02C8FF";
+  html+=`<g class="wp" data-k="${k}"><circle cx="${p.x}" cy="${p.y}" r="11" fill="transparent"/><circle cx="${p.x}" cy="${p.y}" r="${c==="inflight"?7:4.5}" fill="#07182D" stroke="${col}" stroke-width="2"/>${c==="inflight"?`<circle cx="${p.x}" cy="${p.y}" r="7" fill="none" stroke="#00D26A"><animate attributeName="r" from="7" to="20" dur="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="1" to="0" dur="1.6s" repeatCount="indefinite"/></circle>`:""}</g>`});
+ const n=now();let px=pts[0].x,py=pts[0].y-22,ang=90;
+ for(let k=0;k<pts.length-1;k++){const a=pts[k],b=pts[k+1];if(a.d!==b.d)continue;const [s0]=slot(a.d,a.i),[s1]=slot(b.d,b.i);if(n>=s0&&n<s1){const f=(n-s0)/(s1-s0);px=a.x+(b.x-a.x)*f;py=a.y+(b.y-a.y)*f;ang=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI}}
+ let moving=false;for(let k=0;k<pts.length-1;k++){const a=pts[k],b=pts[k+1];if(a.d===b.d&&n>=slot(a.d,a.i)[0]&&n<slot(b.d,b.i)[0])moving=true}
+ if(!moving){let last=-1;pts.forEach((p,k)=>{if(n>=slot(p.d,p.i)[0])last=k});if(last>=0){const p=pts[last];px=p.x;py=p.y-18;ang=0}}
+ html+=`<g class="planeg" transform="translate(${px} ${py}) rotate(${ang+180}) scale(.8)"><circle r="15" fill="#02C8FF22"/><path d="M-10 -1l8-1 5-7h2l-2 7 7 1v2l-7 1 2 7h-2l-5-7-8-1z" fill="#fff"/></g>`;
+ if(n<START)html+=`<text x="${pts[0].x+16}" y="${pts[0].y-18}" fill="#B4B9C0" font-size="10" font-family="Menlo,monospace">KICK-OFF 09:00</text>`;
+ svg.innerHTML=html;const tip=$("#tip");
+ svg.querySelectorAll(".wp").forEach(g=>g.onclick=()=>{const p=pts[+g.dataset.k],r=svg.getBoundingClientRect(),[s]=state(p.d,p.i);
+  tip.innerHTML=`<b>${p.r[0]}</b> · ${p.d===1?"Wed":"Thu"}<br>${p.r[1]}<br><span style="color:#ffd36b;font-size:10px;letter-spacing:.15em">${s}</span>`;
+  tip.style.left=Math.min(r.width-210,Math.max(6,p.x/360*r.width-20))+"px";tip.style.top=(p.y/520*r.height+18)+"px";tip.classList.add("on");clearTimeout(tip._t);tip._t=setTimeout(()=>tip.classList.remove("on"),3500)})}
+
+/* ── pre work ── */
+function checks(){const st=LS("dat-chk")||{};st[0]=!!(LS("dat-name")||"").trim(),done=CHECKS.filter((_,i)=>st[i]).length;
+ $("#checks").innerHTML=CHECKS.map((c,i)=>`<div class="sw ${st[i]?"done":""}" data-i="${i}"><div class="tog"><i></i></div><div class="led"></div><div class="t">${c[0]}<small>${c[1]==="name"?"Ticks itself when you type your name. Needed to claim a quiz win.":c[1]==="cal"?"Use the calendar button on the Agenda tab":"Do by [date TBC] · "+c[1]}</small></div></div>`).join("");
+ const f=done/CHECKS.length;$("#garc").style.strokeDashoffset=301.6*(1-f);$("#gpct").textContent=Math.round(f*100)+"%";$("#gcount").textContent=done+" / "+CHECKS.length;$("#stamp").classList.toggle("on",done===CHECKS.length);
+ document.querySelectorAll(".sw").forEach(el=>el.onclick=()=>{const s=LS("dat-chk")||{},i=el.dataset.i;if(CHECKS[i][1]==="name"){$("#pname").focus();scrollTo({top:0,behavior:"smooth"});return}s[i]=!s[i];LS("dat-chk",s);navigator.vibrate&&navigator.vibrate(12);checks();if(s[i]&&CHECKS.every((_,k)=>s[k]))boom()})}
+function ics(){const t="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//DAT//Summit//EN\nBEGIN:VEVENT\nUID:dat-tech-summit-fy27@dat\nDTSTAMP:20261101T000000Z\nDTSTART:20261216T070000Z\nDTEND:20261217T160000Z\nSUMMARY:FY27 DAT Tech Summit, Kraków\nDESCRIPTION:Times to be confirmed\nEND:VEVENT\nEND:VCALENDAR";const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/calendar"}));a.download="DAT_Tech_Summit.ics";a.click()}
+
+/* ── weather ── */
+const wmo=c=>c===0?["☀︎","clear"]:c<=2?["⛅︎","partly cloudy"]:c===3?["☁︎","cloudy"]:c<=48?["≋","foggy"]:c<=67?["☂︎","rainy"]:c<=77?["❄︎","snowing"]:c<=82?["☂︎","showers"]:c<=86?["❄︎","snow showers"]:["⚡︎","stormy"];
+async function weather(){try{const ac=new AbortController();setTimeout(()=>ac.abort(),6000);
+ const j=await(await fetch("https://api.open-meteo.com/v1/forecast?latitude=50.0647&longitude=19.945&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FWarsaw&forecast_days=16",{signal:ac.signal})).json();
+ const c=j.current.weather_code,w=wmo(c);$("#wxnow").textContent=Math.round(j.current.temperature_2m)+"°";$("#wxtxt").textContent=`${w[0]} ${w[1]} in Kraków right now`;if((c>=71&&c<=77)||c===85||c===86)SNOW=true;
+ $("#wxdays").innerHTML=j.daily.time.map((d,i)=>d===D[1]||d===D[2]?`<div>${d===D[1]?"Wed 16":"Thu 17"} ${wmo(j.daily.weather_code[i])[0]} <b>${Math.round(j.daily.temperature_2m_max[i])}°</b> / ${Math.round(j.daily.temperature_2m_min[i])}°</div>`:"").join("")||`<div>Summit-day forecast appears about two weeks before.</div>`}
+ catch(e){$("#wxtxt").textContent="Live weather unavailable offline."}}
+
+/* ── city ── */
+$("#tiles").innerHTML=TILES.map(p=>`<a class="tile" target="_blank" rel="noopener" href="${MAP(p[4])}" style="background:linear-gradient(160deg,${p[3]}40,#0c1f3dcc);border:1px solid ${p[3]}66"><div>${ic(p[0],p[3],36,1.6)}</div><div><b>${p[1]}</b><span>${p[2]}</span></div></a>`).join("");
+$("#food").innerHTML=[["pierogi","Pierogi","filled dumplings"],["ring","Obwarzanek","street bread ring"],["bread","Zapiekanka","toasted baguette"]].map((f,i)=>`<div data-i="${i}">${ic(f[0],"#ffd36b",32)}<b>${f[1]}</b><small>${f[2]}</small></div>`).join("");
+$("#food").querySelector('[data-i="0"]').onclick=e=>found("pierogi",e,e.currentTarget);
+$("#xmas").onclick=e=>found("xmas",e,$("#xmas"));$("#egg112").style.cursor="pointer";$("#egg112").onclick=e=>found("112",e,$("#egg112"));
+
+$("#m1").href=MAP("Aleja Powstańców Wielkopolskich 13C 30-707 Kraków");$("#m2").href=MAP("Sheraton Grand Krakow Powiśle 7 Kraków");
+function feedback(){$("#fb").innerHTML=(PRINT||now()>=at(2,"17:00"))?`<div class="card"><b>After the summit</b><br>Tell us what worked and what didn't.<br><a class="btn" href="#">Share your feedback</a> <span class="tbc">(link TBC)</span></div>`:""}
+
+/* ── nav ── */
+const TABS=[["pre","Pre work","list"],["agenda","Agenda","cal"],["timeline","Timeline","line"],["log","Logistics","pin"],["city","Kraków","castle"],["quiz","Quiz","egg"]];
+let tab=qp.get("t")||(summit()?"agenda":"pre");
+function nav(scroll){const g=got(),sc=EGGS.filter(e=>g[e.id]).length;
+ $("#navi").innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]===tab?"on":""}">${ic(t[2],null,21)}${t[1]}${t[0]==="quiz"&&sc?`<span class="dot">${sc}</span>`:""}</button>`).join("");
+ document.querySelectorAll(".sec").forEach(s=>s.classList.toggle("on",s.dataset.s===tab));
+ document.querySelectorAll("#navi button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;nav(true)});
+ if(scroll)scrollTo({top:$("#cdwrap").offsetTop,behavior:RM?"auto":"smooth"});
+ if(scroll!==false){if(tab==="agenda")agenda();if(tab==="timeline")timeline();if(tab==="quiz")quiz()}}
+
+/* ── demo time machine ── */
+if(qp.get("demo"))$("#tmlink").style.display="inline";
+$("#tmlink").onclick=()=>$("#tm").classList.toggle("on");
+const T0=new Date("2026-12-16T07:30:00+01:00"),T1=new Date("2026-12-17T19:00:00+01:00");
+$("#tmr").oninput=e=>{const v=+e.target.value;SIM=v===0?null:new Date(T0.getTime()+(T1-T0)*v/100);
+ $("#tml").textContent=SIM?SIM.toLocaleString("en-GB",{timeZone:"Europe/Warsaw",weekday:"short",hour:"2-digit",minute:"2-digit"})+" Kraków":"real time";day=summit()?autoDay():1;countdown();feedback();daynight();nav(null)};
+
+/* ── background ── */
+const sky=$("#sky"),sx=sky.getContext("2d");let W,H,st=[];
+function rs(){W=sky.width=innerWidth;H=sky.height=innerHeight;st=Array.from({length:110},()=>({x:Math.random()*W,y:Math.random()*H,z:Math.random()*1.4+.2}))}rs();addEventListener("resize",rs);
+const PL=new Path2D("M2 14l10-1 6-9h3l-3 9 8 1v2l-8 1 3 9h-3l-6-9-10-1z");
+let planes=[],nextPlane=(new URLSearchParams(location.search).get('fx')?300:2500),lastT=performance.now(),shoot=null,nextShoot=9000;
+function spawnPlane(){const dir=Math.random()<.5?1:-1,sz=.7+Math.random()*.55;planes.push({x:dir>0?-40:W+40,y:H*(.06+Math.random()*.6),v:dir*(26+Math.random()*34),dir,sz,trail:[],t:0})}
+function drawPlane(c,x,y,dir,sz,a,night){c.save();c.translate(x,y);if(dir>0)c.scale(-1,1);c.scale(sz,sz);c.translate(-16,-16);c.globalAlpha=a;c.fillStyle="#fff";c.fill(PL);
+ c.globalAlpha=a;const L_=dir>0?"#ff3b5c":"#00D26A",R_=dir>0?"#00D26A":"#ff3b5c";c.fillStyle=L_;c.fillRect(3,3,2.4,2.4);c.fillStyle=R_;c.fillRect(3,26,2.4,2.4);c.restore()}
+(function loop(){const now_=performance.now(),dt=Math.min(.05,(now_-lastT)/1000);lastT=now_;
+ sx.fillStyle="#07182D";sx.fillRect(0,0,W,H);const g=sx.createRadialGradient(W*.85,H*.1,0,W*.85,H*.1,W*.9);g.addColorStop(0,"rgba(10,96,255,.2)");g.addColorStop(1,"rgba(7,24,45,0)");sx.fillStyle=g;sx.fillRect(0,0,W,H);
+ st.forEach(s=>{if(!still()){s.x-=s.z*.2;if(s.x<0)s.x=W}sx.fillStyle=`rgba(180,220,255,${.28*s.z})`;sx.fillRect(s.x,s.y,s.z*1.3,s.z*1.3)});
+ if(!still()){nextPlane-=dt*1000;if(nextPlane<=0&&planes.length<2){spawnPlane();nextPlane=7000+Math.random()*9000}
+  planes.forEach(p=>{p.x+=p.v*dt;p.t+=dt;if(p.t>.05){p.t=0;p.trail.push([p.x-p.dir*8*p.sz*2,p.y]);if(p.trail.length>46)p.trail.shift()}
+   sx.lineWidth=1.3;for(let i=1;i<p.trail.length;i++){sx.strokeStyle=`rgba(210,235,255,${i/p.trail.length*.34})`;sx.beginPath();sx.moveTo(p.trail[i-1][0],p.trail[i-1][1]);sx.lineTo(p.trail[i][0],p.trail[i][1]);sx.stroke()}
+   drawPlane(sx,p.x,p.y,p.dir,p.sz,.8)});planes=planes.filter(p=>p.x>-80&&p.x<W+80);
+  nextShoot-=dt*1000;if(nextShoot<=0&&!shoot){shoot={x:W*(.3+Math.random()*.6),y:H*.05,vx:-260,vy:130,l:1};nextShoot=14000+Math.random()*16000}
+  if(shoot){shoot.x+=shoot.vx*dt;shoot.y+=shoot.vy*dt;shoot.l-=dt*1.3;const gr=sx.createLinearGradient(shoot.x,shoot.y,shoot.x+shoot.vx*.18,shoot.y+shoot.vy*.18);gr.addColorStop(0,`rgba(255,255,255,${Math.max(0,shoot.l)})`);gr.addColorStop(1,"rgba(255,255,255,0)");sx.strokeStyle=gr;sx.lineWidth=1.6;sx.beginPath();sx.moveTo(shoot.x,shoot.y);sx.lineTo(shoot.x+shoot.vx*.18,shoot.y+shoot.vy*.18);sx.stroke();if(shoot.l<=0)shoot=null}}
+ requestAnimationFrame(loop)})();
+
+
+/* ── rotating globe with flight arcs into Kraków (decorative; arcs are not real routes) ── */
+const LAND=[-528,-690,-492,-720,-456,-746,-456,-694,-456,1671,-420,-705,-420,-657,-420,1484,-420,1727,-384,-715,-384,-669,-384,-623,-384,1454,-384,1777,-348,-724,-348,-680,-348,-637,-348,-593,-348,-549,-348,198,-348,1163,-348,1383,-348,1427,-348,1471,-348,1734,-312,-691,-312,-649,-312,-607,-312,-565,-312,-523,-312,188,-312,230,-312,272,-312,1193,-312,1235,-312,1277,-312,1319,-312,1360,-312,1402,-312,1444,-312,1486,-312,1528,-276,-688,-276,-647,-276,-607,-276,-566,-276,-526,-276,-485,-276,162,-276,202,-276,243,-276,283,-276,324,-276,1173,-276,1213,-276,1254,-276,1294,-276,1335,-276,1375,-276,1416,-276,1456,-276,1497,-240,-673,-240,-633,-240,-593,-240,-554,-240,-514,-240,-475,-240,158,-240,198,-240,237,-240,277,-240,316,-240,475,-240,1147,-240,1187,-240,1226,-240,1266,-240,1305,-240,1345,-240,1385,-240,1424,-240,1464,-240,1503,-204,-670,-204,-632,-204,-594,-204,-555,-204,-517,-204,-479,-204,-440,-204,134,-204,172,-204,211,-204,249,-204,287,-204,326,-204,440,-204,479,-204,1206,-204,1245,-204,1283,-204,1321,-204,1360,-204,1398,-204,1436,-204,1474,-168,-694,-168,-656,-168,-619,-168,-581,-168,-544,-168,-506,-168,-469,-168,-431,-168,-394,-168,131,-168,169,-168,206,-168,244,-168,281,-168,319,-168,356,-168,469,-168,1256,-168,1294,-168,1331,-168,1369,-168,1444,-132,-742,-132,-705,-132,-668,-132,-631,-132,-594,-132,-557,-132,-520,-132,-482,-132,-445,-132,-408,-132,148,-132,186,-132,223,-132,260,-132,297,-132,334,-132,371,-132,1336,-96,-764,-96,-727,-96,-691,-96,-655,-96,-618,-96,-582,-96,-545,-96,-509,-96,-473,-96,-436,-96,-400,-96,-364,-96,145,-96,182,-96,218,-96,255,-96,291,-96,327,-96,364,-96,1200,-96,1491,-96,1600,-60,-800,-60,-764,-60,-727,-60,-691,-60,-655,-60,-618,-60,-582,-60,-545,-60,-509,-60,-473,-60,-436,-60,-400,-60,-364,-60,145,-60,182,-60,218,-60,255,-60,291,-60,327,-60,364,-60,1345,-60,1418,-60,1455,-60,1491,-24,-774,-24,-738,-24,-702,-24,-666,-24,-630,-24,-594,-24,-558,-24,-522,-24,-486,-24,-450,-24,126,-24,162,-24,198,-24,234,-24,270,-24,306,-24,342,-24,378,-24,1026,-24,1134,-24,1206,-24,1386,12,-774,12,-738,12,-702,12,-666,12,-630,12,-594,12,-558,12,-522,12,126,12,162,12,198,12,234,12,270,12,306,12,342,12,378,12,414,12,990,12,1026,12,1098,12,1134,12,1170,12,1206,12,1278,48,-774,48,-738,48,-702,48,-666,48,-630,48,-594,48,-558,48,-522,48,-90,48,-18,48,54,48,90,48,126,48,162,48,198,48,234,48,270,48,306,48,342,48,378,48,414,48,450,48,954,48,1026,48,1170,84,-836,84,-764,84,-727,84,-691,84,-655,84,-618,84,-109,84,-73,84,-36,84,0,84,36,84,73,84,109,84,145,84,182,84,218,84,255,84,291,84,327,84,364,84,400,84,436,84,473,84,800,84,982,84,1236,120,-863,120,-716,120,-129,120,-92,120,-55,120,-18,120,18,120,55,120,92,120,129,120,165,120,202,120,239,120,276,120,312,120,349,120,386,120,422,120,753,120,790,120,1047,120,1084,156,-919,156,-881,156,-844,156,-131,156,-94,156,-56,156,-19,156,19,156,56,156,94,156,131,156,169,156,206,156,244,156,281,156,319,156,356,156,394,156,431,156,469,156,506,156,769,156,994,156,1031,156,1069,192,-1551,192,-1015,192,-977,192,-900,192,-709,192,-134,192,-96,192,-57,192,-19,192,19,192,57,192,96,192,134,192,172,192,211,192,249,192,287,192,326,192,364,192,440,192,479,192,517,192,555,192,747,192,785,192,823,192,938,192,977,192,1015,192,1053,192,1091,228,-1037,228,-998,228,-802,228,-137,228,-98,228,-59,228,-20,228,20,228,59,228,98,228,137,228,176,228,215,228,254,228,293,228,333,228,411,228,450,228,489,228,528,228,567,228,724,228,763,228,802,228,841,228,880,228,920,228,959,228,998,228,1037,228,1076,228,1115,228,1154,264,-1060,264,-1020,264,-980,264,-140,264,-100,264,-60,264,-20,264,20,264,60,264,100,264,140,264,180,264,220,264,260,264,300,264,380,264,420,264,460,264,500,264,580,264,620,264,660,264,700,264,740,264,780,264,820,264,860,264,900,264,940,264,980,264,1020,264,1060,264,1100,264,1140,264,1180,300,-1117,300,-1076,300,-1034,300,-993,300,-952,300,-910,300,-828,300,-83,300,-41,300,0,300,41,300,83,300,124,300,166,300,207,300,248,300,290,300,331,300,372,300,414,300,455,300,497,300,538,300,579,300,621,300,662,300,703,300,745,300,786,300,828,300,869,300,910,300,952,300,993,300,1034,300,1076,300,1117,300,1159,300,1200,336,-1171,336,-1128,336,-1084,336,-1041,336,-998,336,-954,336,-911,336,-867,336,-824,336,-43,336,0,336,43,336,87,336,390,336,434,336,477,336,520,336,564,336,607,336,651,336,694,336,737,336,781,336,824,336,867,336,911,336,954,336,998,336,1041,336,1084,336,1128,336,1171,336,1345,372,-1192,372,-1148,372,-1102,372,-1058,372,-1012,372,-968,372,-922,372,-878,372,-832,372,-788,372,-68,372,-22,372,68,372,292,372,338,372,382,372,428,372,472,372,562,372,608,372,652,372,698,372,742,372,788,372,832,372,878,372,922,372,968,372,1012,372,1058,372,1102,372,1148,372,1192,372,1282,408,-1208,408,-1161,408,-1113,408,-1066,408,-1018,408,-971,408,-924,408,-876,408,-829,408,-782,408,-734,408,-71,408,-24,408,166,408,213,408,261,408,308,408,355,408,403,408,450,408,592,408,639,408,687,408,734,408,782,408,829,408,876,408,924,408,971,408,1018,408,1066,408,1113,408,1161,408,1208,408,1255,444,-1217,444,-1166,444,-1115,444,-1065,444,-1014,444,-963,444,-913,444,-862,444,-811,444,-761,444,-710,444,-659,444,0,444,51,444,101,444,203,444,254,444,406,444,456,444,507,444,558,444,608,444,659,444,710,444,761,444,811,444,862,444,913,444,963,444,1014,444,1065,444,1115,444,1166,444,1217,444,1268,444,1318,444,1420,480,-1236,480,-1182,480,-1128,480,-1075,480,-1021,480,-967,480,-913,480,-860,480,-806,480,-752,480,-699,480,-591,480,-537,480,0,480,54,480,107,480,161,480,215,480,269,480,322,480,376,480,430,480,484,480,537,480,591,480,645,480,699,480,752,480,806,480,860,480,913,480,967,480,1021,480,1075,480,1128,480,1182,480,1236,480,1290,480,1343,480,1397,516,-1248,516,-1190,516,-1132,516,-1074,516,-1016,516,-958,516,-900,516,-842,516,-784,516,-726,516,-668,516,-610,516,-87,516,-29,516,87,516,145,516,203,516,261,516,319,516,377,516,435,516,494,516,552,516,610,516,668,516,726,516,784,516,842,516,900,516,958,516,1016,516,1074,516,1132,516,1190,516,1248,516,1306,516,1365,516,1423,552,-1263,552,-1200,552,-1137,552,-1074,552,-1011,552,-947,552,-884,552,-758,552,-695,552,-632,552,253,552,316,552,379,552,442,552,505,552,568,552,632,552,695,552,758,552,821,552,884,552,947,552,1011,552,1074,552,1137,552,1200,552,1263,552,1326,552,1579,588,-1558,588,-1350,588,-1281,588,-1212,588,-1142,588,-1073,588,-1004,588,-935,588,-727,588,-658,588,173,588,242,588,312,588,381,588,450,588,519,588,588,588,658,588,727,588,796,588,865,588,935,588,1004,588,1073,588,1142,588,1212,588,1281,588,1350,588,1627,624,-1604,624,-1526,624,-1448,624,-1370,624,-1291,624,-1213,624,-1135,624,-1057,624,-978,624,-665,624,-430,624,117,624,274,624,352,624,430,624,509,624,587,624,665,624,743,624,822,624,900,624,978,624,1057,624,1135,624,1213,624,1291,624,1370,624,1448,624,1526,624,1604,624,1683,624,1761,660,-1756,660,-1580,660,-1493,660,-1405,660,-1317,660,-1229,660,-1141,660,-1054,660,-966,660,-878,660,-702,660,-527,660,-439,660,176,660,263,660,439,660,527,660,615,660,702,660,790,660,878,660,966,660,1054,660,1141,660,1229,660,1317,660,1405,660,1493,660,1580,660,1668,660,1756,696,-1543,696,-1440,696,-1337,696,-1131,696,-1029,696,-926,696,-720,696,-411,696,-309,696,206,696,309,696,617,696,720,696,823,696,926,696,1029,696,1131,696,1234,696,1337,696,1440,696,1543,696,1749,732,-1241,732,-993,732,-869,732,-497,732,-372,732,-248,732,869,732,993,732,1117,732,1241,768,-1096,768,-939,768,-783,768,-626,768,-470,768,-313,804,-635,804,-424,804,-212,804,212];
+const KRK=[50.06,19.94],HUBS=[[51.5,-0.1],[40.4,-3.7],[41.9,12.5],[59.3,18.1],[25.2,55.3],[30.0,31.2],[-26.2,28.0],[48.9,2.3]];
+function globe(){const c=$("#globe"),g=c.getContext("2d"),R=88,CX=104,CY=104,D=Math.PI/180;let lon0=-40,t0=performance.now();
+ const proj=(lat,lon,k)=>{const la=lat*D,lo=(lon-lon0)*D,ph=22*D,cl=Math.cos(la);let x=cl*Math.sin(lo),y=Math.sin(la),z=cl*Math.cos(lo);const y2=y*Math.cos(ph)-z*Math.sin(ph),z2=y*Math.sin(ph)+z*Math.cos(ph);return [CX+x*R*(k||1),CY-y2*R*(k||1),z2]};
+ const arc=(a,b,n)=>{const A=[Math.cos(a[0]*D)*Math.cos(a[1]*D),Math.cos(a[0]*D)*Math.sin(a[1]*D),Math.sin(a[0]*D)],B=[Math.cos(b[0]*D)*Math.cos(b[1]*D),Math.cos(b[0]*D)*Math.sin(b[1]*D),Math.sin(b[0]*D)];
+  const om=Math.acos(Math.max(-1,Math.min(1,A[0]*B[0]+A[1]*B[1]+A[2]*B[2]))),out=[];for(let i=0;i<=n;i++){const t=i/n,s1=Math.sin((1-t)*om)/Math.sin(om),s2=Math.sin(t*om)/Math.sin(om);
+   const v=[s1*A[0]+s2*B[0],s1*A[1]+s2*B[1],s1*A[2]+s2*B[2]],lat=Math.asin(v[2])/D,lon=Math.atan2(v[1],v[0])/D;out.push([lat,lon,1+Math.sin(Math.PI*t)*.16*(om/1.2)])}return out};
+ const ARCS=HUBS.map(h=>arc(h,KRK,36));
+ (function loop(){const t=performance.now(),dt=Math.min(.05,(t-t0)/1000);t0=t;if(!still())lon0=(lon0+dt*9)%360;
+  g.clearRect(0,0,208,208);
+  const gr=g.createRadialGradient(CX-20,CY-24,10,CX,CY,R);gr.addColorStop(0,"#16417a");gr.addColorStop(1,"#0a2146");g.beginPath();g.arc(CX,CY,R,0,7);g.fillStyle=gr;g.fill();g.strokeStyle="rgba(2,200,255,.5)";g.lineWidth=1.2;g.stroke();
+  g.fillStyle="#9fd3ff";for(let i=0;i<LAND.length;i+=2){const p=proj(LAND[i]/10,LAND[i+1]/10);if(p[2]>0){g.globalAlpha=.25+.6*p[2];g.fillRect(p[0]-1,p[1]-1,2,2)}}g.globalAlpha=1;
+  const ph=(t/1600)%1;
+  ARCS.forEach((a,k)=>{let started=false;g.beginPath();a.forEach(q=>{const p=proj(q[0],q[1],q[2]);if(p[2]>0){started?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]);started=true}else started=false});g.strokeStyle="rgba(255,211,107,.55)";g.lineWidth=1;g.stroke();
+   const i=Math.floor(((ph+k*.13)%1)*(a.length-1)),q=a[i],p=proj(q[0],q[1],q[2]);if(p[2]>0){g.fillStyle="#fff";g.beginPath();g.arc(p[0],p[1],1.8,0,7);g.fill()}});
+  const k=proj(KRK[0],KRK[1],1);if(k[2]>0){const pl=(t/900)%1;g.strokeStyle=`rgba(255,211,107,${1-pl})`;g.lineWidth=1.5;g.beginPath();g.arc(k[0],k[1],3+pl*12,0,7);g.stroke();g.fillStyle="#ffd36b";g.beginPath();g.arc(k[0],k[1],3.2,0,7);g.fill()}
+  const sh=g.createRadialGradient(CX,CY,R*.6,CX,CY,R*1.18);sh.addColorStop(0,"rgba(2,200,255,0)");sh.addColorStop(1,"rgba(2,200,255,.22)");g.fillStyle=sh;g.beginPath();g.arc(CX,CY,R*1.18,0,7);g.fill();
+  requestAnimationFrame(loop)})()}
+function calmUI(){document.body.classList.toggle("calm",CALM);$("#calm").textContent="Calm mode: "+(CALM?"on":"off")}
+$("#calm").onclick=()=>{CALM=!CALM;localStorage.setItem("dat-calm",JSON.stringify(CALM));calmUI();toast(CALM?"Calm mode on: background stands still":"Calm mode off")};
+
+/* ── boot ── */
+$("#pname").value=LS("dat-name")||"";$("#pname").oninput=hello;hello();
+tilt();daynight();skylineEggs();snow();globe();calmUI();day=summit()?autoDay():1;countdown();checks();feedback();nav(null);quiz();weather();
+if(PRINT){document.body.classList.add("print");CALM=true;document.querySelectorAll("details").forEach(d=>d.open=true);
+ const sec=document.querySelector('.sec[data-s="agenda"]');sec.querySelector(".dayb").remove();
+ sec.querySelector(".board").outerHTML=[1,2].map(d=>`<div style="break-inside:avoid"><div class="dayh2">${d===1?"WEDNESDAY 16 DECEMBER":"THURSDAY 17 DECEMBER"}</div><div class="board">${AG[d].map(r=>`<div class="row"><span class="t">${r[0]}</span><span class="n">${r[1]}</span><span class="st"></span></div>`).join("")}</div></div>`).join("");
+ sec.querySelectorAll(".btn").forEach(b=>b.remove())}
+else setInterval(()=>{countdown();daynight();if(tab==="timeline")timeline()},30000);
+</script>
+</body>
+</html>
